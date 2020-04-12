@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 // 导入组件
-import login from '@/views/login.vue';
+import login from '@/views/login/login.vue';
 
 // 注册路由
 Vue.use(VueRouter);

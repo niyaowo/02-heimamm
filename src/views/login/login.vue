@@ -34,17 +34,31 @@
         <!-- 表单按钮 -->
         <el-button type="primary" class="loginUp">登入</el-button>
         <br />
-        <el-button type="primary" class="loginIn">注册</el-button>
+        <el-button type="primary" class="loginIn" @click="showRegister">注册</el-button>
       </div>
     </div>
     <div class="right">
       <img src="@/assets/img/login_banner_ele.png" alt />
     </div>
+    <!-- 注册页面 -->
+    <register ref="reg"></register>
   </div>
 </template>
 
 <script>
-export default {};
+// 导入注册组件
+import register from "./register";
+export default {
+  // 注册子组件
+  components: {
+    register
+  },
+  methods: {
+    showRegister() {
+      this.$refs.reg.visible = true;
+    }
+  }
+};
 </script>
 
 <style lang="less">

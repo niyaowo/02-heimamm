@@ -26,7 +26,6 @@ instance.interceptors.request.use(function (config) {
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
     // 对响应数据做点什么
-    console.log("拦截", response);
     if (response.data.code == 200) {
         return response.data;
     } else {

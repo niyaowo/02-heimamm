@@ -5,7 +5,8 @@ function setToken(val, name = "token") {
 
 // 获取token
 function getToken(name = "token") {
-    window.localStorage.getItem(name);
+    // 一定要return token值 否则获取不到
+    return window.localStorage.getItem(name);
 }
 
 // 删除token

@@ -11,7 +11,7 @@
         <el-form :model="formData" :rules="rules" ref="form">
           <!-- 用户名/手机号 -->
           <el-form-item prop="phone">
-            <el-input prefix-icon="el-icon-user" v-model="formData.phone" placeholder="请输入内容"></el-input>
+            <el-input prefix-icon="el-icon-user" v-model="formData.phone" placeholder="请输入昵称"></el-input>
           </el-form-item>
           <!-- 密码框 -->
           <el-form-item prop="password">
@@ -19,7 +19,7 @@
               show-password
               prefix-icon="el-icon-lock"
               v-model="formData.password"
-              placeholder="请输入内容"
+              placeholder="请输入密码"
             ></el-input>
           </el-form-item>
           <!-- 验证码 -->
@@ -62,7 +62,7 @@ import register from "./register";
 // 用户登入请求
 import { userLogin } from "@/api/loginUp.js";
 // 导入token
-import { setToken } from "@/utils/token.js";
+import { setToken, getToken } from "@/utils/token.js";
 export default {
   // 注册子组件
   components: {
@@ -139,10 +139,10 @@ export default {
         if (res) {
           userLogin(this.formData).then(res => {
             if (res.code == 200) {
-              console.log(res);
               this.$message.success("登入成功");
               // 设置本地参数 token
               setToken(res.data.token);
+              this.$router.push("/home");
             }
           });
         }
@@ -152,6 +152,12 @@ export default {
   created() {
     // 获取验证码
     this.imageUrl = process.env.VUE_APP_URL + "/captcha?type=login";
+    // 数据加载完之后 立马判断当前用户是否保存了 token 如果有就登入 没有停止在当前页面1
+    if (getToken()) {
+      setToken(getToken());
+      this.$message.success("登入成功");
+      this.$router.push("/home");
+    }
   }
 };
 </script>

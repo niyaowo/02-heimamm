@@ -1,7 +1,7 @@
 // 设置请求错误拦截器
 // 导入axios
 import axios from 'axios';
-
+import { getToken } from './token.js'
 // 导入element 弹窗
 import { Message } from 'element-ui';
 
@@ -17,7 +17,12 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
+    if (getToken()) {
+        // 设置请求头参数 token
+        config.headers.token = getToken();
+    }
     return config;
+
 }, function (error) {
     // 对请求错误做些什么
     return Promise.reject(error);

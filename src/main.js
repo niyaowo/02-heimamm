@@ -3,6 +3,9 @@ import App from './App.vue'
 
 // 导入路由对象
 import router from '@/router/router.js';
+// 导入数据共享管理
+import store from '@/store/index.js';
+
 Vue.config.productionTip = false;
 
 // 导入element插件
@@ -14,5 +17,7 @@ Vue.use(ElementUI);
 new Vue({
   render: h => h(App),
   // 注入路由对象
-  router
+  router,
+  // 注入数据共享
+  store
 }).$mount('#app')

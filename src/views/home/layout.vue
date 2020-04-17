@@ -18,31 +18,38 @@
       <el-container>
         <!-- 导航栏 -->
         <el-aside width="auto" class="aside">
-          <el-menu :router="true" default-active="2" :collapse="collapse" class="transition">
-            <el-menu-item index="1">
+          <el-menu
+            :router="true"
+            :default-active="$route.fullPath"
+            :collapse="collapse"
+            class="transition"
+          >
+            <el-menu-item index="/home/chart">
               <i class="el-icon-pie-chart"></i>
               <span slot="title">数据概览</span>
             </el-menu-item>
-            <el-menu-item index="2">
+            <el-menu-item index="/home/user">
               <i class="el-icon-user"></i>
               <span slot="title">用户列表</span>
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item index="/home/question">
               <i class="el-icon-edit-outline"></i>
               <span slot="title">题库列表</span>
             </el-menu-item>
-            <el-menu-item index="4">
+            <el-menu-item index="/home/business">
               <i class="el-icon-office-building"></i>
               <span slot="title">企业列表</span>
             </el-menu-item>
-            <el-menu-item index="5">
+            <el-menu-item index="/home/subject">
               <i class="el-icon-notebook-2"></i>
               <span slot="title">学科列表</span>
             </el-menu-item>
           </el-menu>
         </el-aside>
         <!-- 主体内容 -->
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -85,13 +92,12 @@ export default {
       this.$store.state.userInfo = this.userInfo;
       // 将用户角色/身份保存到数据共享中
       this.$store.state.role = res.data.role;
-      console.log(this.$router);
     });
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" >
 .layout {
   height: 100%;
   .head {
@@ -158,13 +164,12 @@ export default {
     }
   }
 
-  .el-main {
-    height: 100%;
-    background-color: #e9eef3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
-  }
+  // .el-main {
+  //   height: 100%;
+  //   background-color: #e9eef3;
+  //   color: #333;
+  //   text-align: center;
+  // }
   .el-container {
     height: 100%;
   }

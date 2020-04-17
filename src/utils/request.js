@@ -1,7 +1,8 @@
 // 设置请求错误拦截器
 // 导入axios
 import axios from 'axios';
-import { getToken } from './token.js'
+import router from '@/router/router.js'
+import { getToken, removeToken } from './token.js'
 // 导入element 弹窗
 import { Message } from 'element-ui';
 
@@ -33,7 +34,13 @@ instance.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     if (response.data.code == 200) {
         return response.data;
-    } else {
+    } else if (response.data.code == 206) {
+        // 请求超时/token错误
+        Message.error("请求超时");
+        removeToken();
+        router.push("/login");
+    }
+    else {
         Message.error(response.data.message);
         return Promise.reject("error");
     }

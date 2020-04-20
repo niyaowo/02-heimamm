@@ -129,6 +129,7 @@ export default {
         username: "",
         status: ""
       };
+      this.search();
     },
     // 当页面容量改变
     handleSizeChange(size) {

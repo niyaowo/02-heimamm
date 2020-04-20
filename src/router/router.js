@@ -9,6 +9,7 @@ import question from '@/views/home/question/question.vue';
 import chart from '@/views/home/chart/chart.vue';
 import business from '@/views/home/business/business.vue';
 import subject from '@/views/home/subject/subject.vue';
+import store from '../store';
 
 // 注册路由
 Vue.use(VueRouter);
@@ -18,42 +19,96 @@ const router = new VueRouter({
         // 注册登录页
         {
             path: '/',
-            component: login
+            component: login,
+            meta: {
+                title: "登录页",
+                rules: ["超级管理员", "管理员", "老师", "学生"]
+            }
         },
         {
             path: '/login',
-            component: login
+            component: login,
+            meta: {
+                title: "登录页",
+                rules: ["超级管理员", "管理员", "老师", "学生"]
+            }
         },
         {
             path: "/home",
             redirect: "/home/subject",
             component: home,
+            meta: {
+                title: "首页",
+                rules: ["超级管理员", "管理员", "老师", "学生"]
+            },
             // 子路由嵌套
             children: [
                 {
+                    path: "chart",
+                    component: chart,
+                    meta: {
+                        title: "数据概览",
+                        rules: ["超级管理员", "管理员", "老师"],
+                        icon: "el-icon-pie-chart"
+                    }
+                },
+
+
+                {
                     path: "user",
-                    component: user
+                    component: user,
+                    meta: {
+                        title: "用户列表",
+                        rules: ["超级管理员", "管理员"],
+                        icon: "el-icon-user"
+                    }
                 },
                 {
                     path: "question",
-                    component: question
-                },
-                {
-                    path: "chart",
-                    component: chart
+                    component: question,
+                    meta: {
+                        title: "题库列表",
+                        rules: ["超级管理员", "管理员", "老师"],
+                        icon: "el-icon-edit-outline"
+                    }
                 },
                 {
                     path: "business",
-                    component: business
+                    component: business,
+                    meta: {
+                        title: "企业列表",
+                        rules: ["超级管理员", "管理员", "老师"],
+                        icon: "el-icon-office-building"
+                    }
                 },
                 {
                     path: "subject",
-                    component: subject
+                    component: subject,
+                    meta: {
+                        title: "学科列表",
+                        rules: ["超级管理员", "管理员", "老师", "学生"],
+                        icon: "el-icon-notebook-2"
+                    }
                 },
 
             ]
         }
     ]
+});
+import { Message } from "element-ui";
+import { removeToken } from '@/utils/token.js'
+// 导航守卫
+router.beforeEach((to, form, next) => {
+    if (to.meta.rules.includes(store.state.role)) {
+        next();
+    } else {
+        Message.error("您的权限不够");
+        removeToken();
+        next("/");
+    }
+})
+router.afterEach((to) => {
+    document.title = to.meta.title;
 })
 
 // 导出路由对象

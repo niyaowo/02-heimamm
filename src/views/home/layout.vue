@@ -24,11 +24,16 @@
             :collapse="collapse"
             class="transition"
           >
-            <el-menu-item index="/home/chart">
-              <i class="el-icon-pie-chart"></i>
-              <span slot="title">数据概览</span>
+            <el-menu-item
+              :index="'/home/'+item.path"
+              v-for="(item, index) in $router.options.routes[2].children"
+              :key="index"
+              v-show="item.meta.rules.includes($store.state.role)"
+            >
+              <i :class="item.meta.icon"></i>
+              <span slot="title">{{item.meta.title}}</span>
             </el-menu-item>
-            <el-menu-item index="/home/user">
+            <!-- <el-menu-item index="/home/user">
               <i class="el-icon-user"></i>
               <span slot="title">用户列表</span>
             </el-menu-item>
@@ -43,7 +48,7 @@
             <el-menu-item index="/home/subject">
               <i class="el-icon-notebook-2"></i>
               <span slot="title">学科列表</span>
-            </el-menu-item>
+            </el-menu-item>-->
           </el-menu>
         </el-aside>
         <!-- 主体内容 -->
@@ -92,6 +97,11 @@ export default {
       this.$store.state.userInfo = this.userInfo;
       // 将用户角色/身份保存到数据共享中
       this.$store.state.role = res.data.role;
+      if (res.data.status != 1) {
+        this.$message.error("您的账号被禁用,请联系管理员!");
+        removeToken();
+        this.$router.push("/");
+      }
     });
   }
 };
